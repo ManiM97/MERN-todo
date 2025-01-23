@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { toast } from "react-toastify";
 
 export default function Todo() {
   const [title, setTitle] = useState("");
@@ -40,11 +41,12 @@ export default function Todo() {
         .then((res) => {
           if (!res.ok) throw new Error();
           setTodos([...todos, { title, description }]);
-          setMessage("Task added successfully");
+          // setMessage("Task added successfully");
+          toast.success("Task added successfully");
           setTitle("");
           setDescription("");
         })
-        .catch(() => setError("Unable to create task"));
+        .catch(() => toast.error("Unable to create task"));
     }
   };
 
@@ -64,9 +66,9 @@ export default function Todo() {
           )
         );
         setEditId(-1);
-        setMessage("Task updated successfully");
+        toast.success("Task updated successfully");
       })
-      .catch(() => setError("Unable to update task"));
+      .catch(() => toast.error("Unable to update task"));
   };
 
   const handleDelete = (id) => {
@@ -74,9 +76,9 @@ export default function Todo() {
       .then((res) => {
         if (!res.ok) throw new Error();
         setTodos((prev) => prev.filter((todo) => todo._id !== id));
-        setMessage("Task deleted successfully");
+        toast.success("Task deleted successfully");
       })
-      .catch(() => setError("Unable to delete task"));
+      .catch(() => toast.error("Unable to delete task"));
   };
 
   return (
@@ -88,8 +90,7 @@ export default function Todo() {
 
       <div className="card my-4 shadow">
         <div className="card-body">
-          <h3 className="card-title">Add New Task</h3>
-          {message && <p className="text-success">{message}</p>}
+          <h3 className="card-title">Add New Task</h3>          
           {error && <p className="text-danger">{error}</p>}
           <div className="row g-2">
             <div className="col-md-5">
